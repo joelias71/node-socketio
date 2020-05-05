@@ -15,10 +15,21 @@ app.use(express.static(publicDirectoryPath))
 io.on('connection', (socket) => {
 
     console.log('New websocket connection')
+    //emit to that connection
     socket.emit('message', 'Welcome !')
 
+    //send everybody except socket
+    socket.broadcast.emit('message', 'A new user has joined!')
+
     socket.on('sendMessage', msg => {
+        //send to everyone
         io.emit('message', msg)
+    })
+
+    //send event when client disconnect
+    socket.on('disconnect', () => {
+        //send to everyone because the client is disconnected
+        io.emit('message', 'A user has left')
     })
 })
 
