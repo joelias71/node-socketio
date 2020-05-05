@@ -1,0 +1,27 @@
+{
+  "name": "socketio",
+  "version": "1.0.0",
+  "description": "Node.js application using socket.io",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joelias71/node-socketio.git"
+  },
+  "author": "Jorge Elias",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/joelias71/node-socketio/issues"
+  },
+  "homepage": "https://github.com/joelias71/node-socketio#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.3"
+  }
+}
