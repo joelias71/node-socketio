@@ -26,6 +26,10 @@ io.on('connection', (socket) => {
         io.emit('message', msg)
     })
 
+    socket.on('sendLocation', coords => {
+        io.emit('message', `https://google.com/maps?q=${coords.latitude},${coords.longitude}`)
+    })
+
     //send event when client disconnect
     socket.on('disconnect', () => {
         //send to everyone because the client is disconnected
