@@ -21,13 +21,15 @@ io.on('connection', (socket) => {
     //send everybody except socket
     socket.broadcast.emit('message', 'A new user has joined!')
 
-    socket.on('sendMessage', msg => {
+    socket.on('sendMessage', (msg, callback) => {
         //send to everyone
         io.emit('message', msg)
+        callback('Delivered!')
     })
 
-    socket.on('sendLocation', coords => {
+    socket.on('sendLocation', (coords, callback) => {
         io.emit('message', `https://google.com/maps?q=${coords.latitude},${coords.longitude}`)
+        callback()
     })
 
     //send event when client disconnect
