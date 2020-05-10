@@ -6,9 +6,19 @@ const $messageForm = document.querySelector('#message-form')
 const $messageFormInput = $messageForm.querySelector('input')
 const $messageFormButton = $messageForm.querySelector('button')
 const $sendLocationButton = document.querySelector('#send-location')
+const $messages = document.querySelector('#messages')
 
-socket.on('message', (msg) => {
-    console.log(msg)
+//Templates
+const messageTemplate = document.querySelector('#message-template').innerHTML
+
+socket.on('message', (message) => {
+    console.log(message)
+
+    //store html that is going to be render using moustache
+    const html = Mustache.render(messageTemplate,{
+        message
+    })
+    $messages.insertAdjacentHTML('beforeend', html)
 })
 
 //implicit we have acces to (e) event argument
