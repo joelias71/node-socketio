@@ -30,6 +30,11 @@ io.on('connection', (socket) => {
         socket.emit('message', generateMessage('Admin','Welcome !'))
         //send everybody except socket 'in the room'
         socket.broadcast.to(user.room).emit('message', generateMessage('Admin',`${user.username} has joined!`))
+
+        io.to(user.room).emit('roomData',{
+            room: user.room,
+            users: getUsersInRoom(user.room)
+        })
     })
 
     socket.on('sendMessage', (msg, callback) => {
@@ -59,6 +64,10 @@ io.on('connection', (socket) => {
         if(user) {
             //send to everyone because the client is disconnected
             io.to(user.room).emit('message', generateMessage('Admin',`The user ${user.username} has left the room`))
+            io.to(user.room).emit('roomData', {
+                room: user.room,
+                users: getUsersInRoom(user.room)
+            })
         }
     })
 })
