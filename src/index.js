@@ -27,19 +27,28 @@ io.on('connection', (socket) => {
 
         socket.join(user.room)
         //emit to that connection
-        socket.emit('message', generateMessage('Welcome !'))
+        socket.emit('message', generateMessage('Admin','Welcome !'))
         //send everybody except socket 'in the room'
-        socket.broadcast.to(user.room).emit('message', generateMessage(`${user.username} has joined!`))
+        socket.broadcast.to(user.room).emit('message', generateMessage('Admin',`${user.username} has joined!`))
     })
 
     socket.on('sendMessage', (msg, callback) => {
-        //send to everyone
-        io.emit('message', generateMessage(msg))
+        const user = getUser(socket.id)
+
+        if(user) {
+            //send to everyone
+            io.to(user.room).emit('message', generateMessage(user.username,msg))
+        }
         callback('Delivered!')
     })
 
     socket.on('sendLocation', (coords, callback) => {
-        io.emit('locationMessage', generateLocationMessage(`https://google.com/maps?q=${coords.latitude},${coords.longitude}`))
+        const user = getUser(socket.id)
+
+        if(user) {
+            io.emit('locationMessage', generateLocationMessage(user.username,`https://google.com/maps?q=${coords.latitude},${coords.longitude}`))
+        }
+        
         callback()
     })
 
@@ -48,9 +57,8 @@ io.on('connection', (socket) => {
         const user = removeUser(socket.id)
 
         if(user) {
-            console.log(user)
             //send to everyone because the client is disconnected
-            io.to(user.room).emit('message', generateMessage(`The user ${user.username} has left the room`))
+            io.to(user.room).emit('message', generateMessage('Admin',`The user ${user.username} has left the room`))
         }
     })
 })
